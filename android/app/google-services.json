@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "68188123665",
+    "project_id": "mashtalydashboard2",
+    "storage_bucket": "mashtalydashboard2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68188123665:android:c0691240f60f15e549b7b0",
+        "android_client_info": {
+          "package_name": "com.example.mashtaly_dashboard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjVLeqiatYV_0gD5COkFsENJnWNBOdjT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
