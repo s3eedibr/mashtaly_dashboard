@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//8/12/2023
+//8/12/2023--
 class SplashScreenApp extends StatelessWidget {
   const SplashScreenApp({super.key});
 
