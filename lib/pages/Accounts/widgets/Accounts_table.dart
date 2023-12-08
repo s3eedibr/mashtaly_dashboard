@@ -5,7 +5,7 @@ import 'package:mashtaly_dashboard/constants/image_strings.dart';
 import 'package:mashtaly_dashboard/constants/style.dart';
 import 'package:mashtaly_dashboard/widgets/custom_text.dart';
 
-import 'Dialog.dart';
+import 'AccountDialog.dart';
 
 class AccountTableScreen extends StatefulWidget {
   @override
@@ -112,7 +112,7 @@ class _AccountTableState extends State<AccountTableScreen> {
                                       content: Container(
                                           constraints: const BoxConstraints(
                                               maxWidth: 600.0),
-                                          child: MyDialogContent(
+                                          child: AccountDialogContent(
                                             id: account['hashId'],
                                           )),
                                       actions: [
@@ -150,26 +150,33 @@ class _AccountTableState extends State<AccountTableScreen> {
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            onPressed: () {}),
+                                            onPressed: () {
+                                              activeAccountInFirebase(
+                                                  account['hashId'], true);
+                                            }),
                                         const SizedBox(
                                           width: 20.0,
                                         ),
                                         MaterialButton(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  10.0), // Adjust the radius as needed
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // Adjust the radius as needed
+                                          ),
+                                          color: Colors.orange[800],
+                                          height: 50.0,
+                                          child: const Text(
+                                            'Deactivate',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
                                             ),
-                                            color: Colors.orange[800],
-                                            height: 50.0,
-                                            child: const Text(
-                                              'Deactivate',
-                                              style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            onPressed: () {}),
+                                          ),
+                                          onPressed: () {
+                                            activeAccountInFirebase(
+                                                account['hashId'], false);
+                                          },
+                                        ),
                                         const SizedBox(
                                           width: 70.0,
                                         ),
@@ -187,5 +194,25 @@ class _AccountTableState extends State<AccountTableScreen> {
               ),
       ),
     );
+  }
+}
+
+void activeAccountInFirebase(String documentId, bool newValue) async {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference user = firestore.collection('Users');
+
+  try {
+    // Get the reference to the document you want to update
+    DocumentReference userRef = user.doc(documentId);
+
+    // Update the specific field with the new value
+    await userRef.update({
+      'approve': newValue,
+      // Add more fields to update if needed
+    });
+
+    print('Document updated successfully');
+  } catch (error) {
+    print('Error updating document: $error');
   }
 }

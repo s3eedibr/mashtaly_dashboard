@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mashtaly_dashboard/pages/Accounts/Accounts.dart';
 import 'package:mashtaly_dashboard/pages/Plants/Plants.dart';
+import 'package:mashtaly_dashboard/pages/SellPlant.dart/SellPlants.dart';
 import 'package:mashtaly_dashboard/pages/overview/overview.dart';
 import 'package:mashtaly_dashboard/pages/setting/setting.dart';
 import 'package:mashtaly_dashboard/routing/routes.dart';
@@ -16,7 +17,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case settingPageRoute:
       return _getPageRoute(const SettingPage());
     case sellPlantPageRoute:
-      return _getPageRoute(const SettingPage());
+      return _getPageRoute(const SellPlantsPage());
     default:
       return _getPageRoute(const OverviewPage());
   }

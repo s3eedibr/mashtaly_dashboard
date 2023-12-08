@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyDialogContent extends StatefulWidget {
+class SellDialogContent extends StatefulWidget {
   String? id;
-  MyDialogContent({super.key, required this.id});
+  SellDialogContent({super.key, required this.id});
 
   @override
-  State<MyDialogContent> createState() => _MyDialogContentState();
+  State<SellDialogContent> createState() => _SellDialogContentState();
 }
 
-class _MyDialogContentState extends State<MyDialogContent> {
+class _SellDialogContentState extends State<SellDialogContent> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference users = FirebaseFirestore.instance.collection('Post');
   @override
   Widget build(BuildContext context) {
     String? id = widget.id;
@@ -39,36 +39,20 @@ class _MyDialogContentState extends State<MyDialogContent> {
                   Center(
                     child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 60.0,
-                          backgroundImage: NetworkImage(data['image']),
+                        Image(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(data['image']),
+                          width: 500,
                         ),
                         SizedBox(
                           height: 20.0,
                         ),
-                        Text(
-                          'User Name',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Articles',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25.0,
-                        ),
-                      ),
                       SizedBox(
                         height: 15.0,
                       ),
@@ -100,28 +84,22 @@ class _MyDialogContentState extends State<MyDialogContent> {
                   SizedBox(
                     height: 15.0,
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
                       children: [
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
+                        Text(
+                          'Post Title',
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        SizedBox(
-                          height: 50.0,
+                        Text(
+                          'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more  ',
+                          style: TextStyle(
+                            fontSize: 23.0,
+                          ),
                         ),
                       ],
                     ),
@@ -132,6 +110,26 @@ class _MyDialogContentState extends State<MyDialogContent> {
           }
           return Text("loading");
         });
+  }
+}
+
+void updateFirestoreValue(String documentId, String newValue) async {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference users = firestore.collection('Users');
+
+  try {
+    // Get the reference to the document you want to update
+    DocumentReference userRef = users.doc(documentId);
+
+    // Update the specific field with the new value
+    await userRef.update({
+      'fieldName': newValue,
+      // Add more fields to update if needed
+    });
+
+    print('Document updated successfully');
+  } catch (error) {
+    print('Error updating document: $error');
   }
 }
 
@@ -153,16 +151,6 @@ class Articles extends StatelessWidget {
                 fit: BoxFit.cover,
                 image: NetworkImage(
                     'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg')),
-          ),
-        ),
-        const Text(
-          'How to plant',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-        ),
-        const Text(
-          'by mhamd bl3awi',
-          style: TextStyle(
-            color: Colors.grey,
           ),
         ),
       ],
