@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mashtaly_dashboard/pages/SellPlant.dart/widgets/sellDialog.dart';
 
 import '../../../constants/image_strings.dart';
-import '../../../widgets/top_nav.dart';
 
 class SellPlantsTableScreen extends StatefulWidget {
   @override
@@ -19,7 +18,6 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
   @override
   void initState() {
     super.initState();
-    // Call the method to retrieve data from Firebase
     fetchDataFromFirebase();
   }
 
@@ -120,8 +118,103 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    approvePostInFirebase(
-                                                        sellPost['ID'], true);
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          content: Container(
+                                                            constraints:
+                                                                const BoxConstraints(
+                                                                    maxWidth:
+                                                                        200.0),
+                                                            child: Text(
+                                                              'are u sure?',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      20.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                          actions: [
+                                                            Container(
+                                                              width: 150,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .green,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child:
+                                                                  MaterialButton(
+                                                                      height:
+                                                                          50.0,
+                                                                      child:
+                                                                          const Text(
+                                                                        'yes',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              20.0,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        approvePostInFirebase(
+                                                                            sellPost['ID'],
+                                                                            true);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      }),
+                                                            ),
+                                                            Container(
+                                                              width: 150,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                        .orange[
+                                                                    800],
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child:
+                                                                  MaterialButton(
+                                                                      height:
+                                                                          50.0,
+                                                                      child:
+                                                                          const Text(
+                                                                        'no',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              20.0,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      }),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
                                                   }),
                                             ),
                                             const SizedBox(
@@ -145,7 +238,97 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                                                       color: Colors.white,
                                                     ),
                                                   ),
-                                                  onPressed: () {}),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          content: Container(
+                                                              constraints:
+                                                                  const BoxConstraints(
+                                                                      maxWidth:
+                                                                          200.0),
+                                                              child: Text(
+                                                                  'are u sure?')),
+                                                          actions: [
+                                                            Container(
+                                                              width: 150,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .green,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child:
+                                                                  MaterialButton(
+                                                                      height:
+                                                                          50.0,
+                                                                      child:
+                                                                          const Text(
+                                                                        'yes',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              20.0,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        approvePostInFirebase(
+                                                                            sellPost['ID'],
+                                                                            false);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      }),
+                                                            ),
+                                                            Container(
+                                                              width: 150,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                        .orange[
+                                                                    800],
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child:
+                                                                  MaterialButton(
+                                                                      height:
+                                                                          50.0,
+                                                                      child:
+                                                                          const Text(
+                                                                        'no',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              20.0,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      }),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  }),
                                             ),
                                             const SizedBox(
                                               width: 150,

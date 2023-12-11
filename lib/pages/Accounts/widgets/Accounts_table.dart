@@ -62,13 +62,14 @@ class _AccountTableState extends State<AccountTableScreen> {
                   DataColumn2(label: Text(''), size: ColumnSize.S),
                   DataColumn2(
                     label: Text("Name"),
-                    size: ColumnSize.L,
+                    size: ColumnSize.S,
                   ),
                   DataColumn(
-                    label: Text('Location'),
+                    label: Text('email'),
                   ),
-                  DataColumn(
+                  DataColumn2(
                     label: Text('ID'),
+                    size: ColumnSize.L,
                   ),
                   DataColumn(
                     label: Text('Action'),
@@ -80,20 +81,18 @@ class _AccountTableState extends State<AccountTableScreen> {
                         cells: [
                           DataCell(
                             ClipOval(
-                                child: Image.network(account['image'],
+                                child: Image.network(account['profile_pic'],
                                     width: 50, height: 50, fit: BoxFit.cover)),
                           ),
-                          DataCell(Text('${account['ID']}')),
-                          DataCell(CustomText(text: '${account['location']}')),
-                          const DataCell(Row(
+                          DataCell(Text('${account['name']}')),
+                          DataCell(CustomText(text: '${account['email']}')),
+                          DataCell(Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SizedBox(
                                 width: 5,
                               ),
-                              CustomText(
-                                text: "01368",
-                              )
+                              CustomText(text: '${account['id']}'),
                             ],
                           )),
                           DataCell(
@@ -113,7 +112,7 @@ class _AccountTableState extends State<AccountTableScreen> {
                                           constraints: const BoxConstraints(
                                               maxWidth: 600.0),
                                           child: AccountDialogContent(
-                                            id: account['hashId'],
+                                            userid: account['id'],
                                           )),
                                       actions: [
                                         MaterialButton(
@@ -152,7 +151,7 @@ class _AccountTableState extends State<AccountTableScreen> {
                                             ),
                                             onPressed: () {
                                               activeAccountInFirebase(
-                                                  account['hashId'], true);
+                                                  account['id'], true);
                                             }),
                                         const SizedBox(
                                           width: 20.0,
@@ -174,7 +173,7 @@ class _AccountTableState extends State<AccountTableScreen> {
                                           ),
                                           onPressed: () {
                                             activeAccountInFirebase(
-                                                account['hashId'], false);
+                                                account['id'], false);
                                           },
                                         ),
                                         const SizedBox(

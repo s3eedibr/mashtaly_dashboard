@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mashtaly_dashboard/constants/colors.dart';
 import 'package:mashtaly_dashboard/constants/image_strings.dart';
@@ -65,7 +66,7 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-        future: users.doc('vJPcD22s2l5bFcqFZNKA').get(),
+        future: users.doc(FirebaseAuth.instance.currentUser!.uid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -81,7 +82,7 @@ class ProfileImage extends StatelessWidget {
                 snapshot.data!.data() as Map<String, dynamic>;
             return CircleAvatar(
               child: ClipOval(
-                child: Image.network(data['image'],
+                child: Image.network(data['profile_pic'],
                     width: 55, height: 55, fit: BoxFit.cover),
               ),
             );
@@ -102,7 +103,7 @@ class UserName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-        future: users.doc('vJPcD22s2l5bFcqFZNKA').get(),
+        future: users.doc(FirebaseAuth.instance.currentUser!.uid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {

@@ -1,10 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Constants/colors.dart';
+import '../../../getData/getData.dart';
+import '../../../models/post.dart';
+
 class AccountDialogContent extends StatefulWidget {
-  String? id;
-  AccountDialogContent({super.key, required this.id});
+  String? userid;
+  AccountDialogContent({super.key, required this.userid});
 
   @override
   State<AccountDialogContent> createState() => _AccountDialogContentState();
@@ -13,9 +19,11 @@ class AccountDialogContent extends StatefulWidget {
 class _AccountDialogContentState extends State<AccountDialogContent> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
+  String? id;
   @override
   Widget build(BuildContext context) {
-    String? id = widget.id;
+    id = widget.userid;
+
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(id).get(),
         builder:
@@ -28,7 +36,7 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
             return Text("Document does not exist");
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data =
+            Map<String, dynamic> account =
                 snapshot.data!.data() as Map<String, dynamic>;
             return Container(
               decoration: BoxDecoration(
@@ -41,13 +49,14 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
                       children: [
                         CircleAvatar(
                           radius: 60.0,
-                          backgroundImage: NetworkImage(data['image']),
+                          backgroundImage:
+                              NetworkImage('${account['profile_pic']}'),
                         ),
                         SizedBox(
                           height: 20.0,
                         ),
                         Text(
-                          'User Name',
+                          '${account['name']}',
                           style: TextStyle(
                             fontSize: 25.0,
                             fontWeight: FontWeight.bold,
@@ -70,61 +79,40 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
                         ),
                       ),
                       SizedBox(
-                        height: 15.0,
+                        height: 10.0,
                       ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            Articles(),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Articles(),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Articles(),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Articles(),
-                            SizedBox(
-                              width: 10.0,
-                            ),
+                            buildPostList('${account['id']}'),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'sell plant',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
                         ),
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            buildPostList('${account['id']}'),
+                          ],
                         ),
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Articles(),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        SizedBox(
-                          height: 50.0,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ]),
               ),
@@ -133,12 +121,82 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
           return Text("loading");
         });
   }
+
+  Widget buildPostList(String id) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {});
+        },
+        color: tPrimaryActionColor,
+        backgroundColor: tBgColor,
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          // Fetch all posts using the getMyPosts() function
+          future: getMyPosts(id),
+          builder:
+              (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting ||
+                !snapshot.hasData) {
+              return buildShimmerList(); // Display shimmer loading animation while waiting for data
+            } else if (snapshot.hasError) {
+              return buildErrorWidget(snapshot.error
+                  .toString()); // Display error message if an error occurs
+            } else {
+              return buildPostsListView(
+                  snapshot.data!); // Build the post list view
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget buildShimmerList() {
+    return Container(
+      child: Text('no data'),
+    );
+  }
+
+  Widget buildErrorWidget(String errorMessage) {
+    return Center(
+      child: Text('Error: $errorMessage'), // Display an error message
+    );
+  }
+
+  Widget buildPostsListView(List<Map<String, dynamic>> posts) {
+    return SizedBox(
+      width: 600,
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: posts.length,
+        itemBuilder: (context, index) {
+          final post = posts[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: AccountCard(
+              pic: post['post_pic1'],
+              title: post['title'],
+              name: post['user'],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
-class Articles extends StatelessWidget {
-  const Articles({
-    super.key,
-  });
+class AccountCard extends StatelessWidget {
+  late String name;
+  late String pic;
+  late String title;
+  AccountCard({
+    Key? key,
+    required this.name,
+    required this.pic,
+    required this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -148,19 +206,16 @@ class Articles extends StatelessWidget {
         Container(
           width: 200.0,
           height: 100.0,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg')),
+          decoration: BoxDecoration(
+            image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(pic)),
           ),
         ),
-        const Text(
-          'How to plant',
+        Text(
+          title,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
         ),
-        const Text(
-          'by mhamd bl3awi',
+        Text(
+          name,
           style: TextStyle(
             color: Colors.grey,
           ),

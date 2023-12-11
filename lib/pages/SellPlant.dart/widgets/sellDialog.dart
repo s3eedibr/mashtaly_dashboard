@@ -41,7 +41,7 @@ class _SellDialogContentState extends State<SellDialogContent> {
                       children: [
                         Image(
                           fit: BoxFit.cover,
-                          image: NetworkImage(data['image']),
+                          image: NetworkImage(data['profile_pic']),
                           width: 500,
                         ),
                         SizedBox(
@@ -60,19 +60,19 @@ class _SellDialogContentState extends State<SellDialogContent> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            Articles(),
+                            sellcard(),
                             SizedBox(
                               width: 10.0,
                             ),
-                            Articles(),
+                            sellcard(),
                             SizedBox(
                               width: 10.0,
                             ),
-                            Articles(),
+                            sellcard(),
                             SizedBox(
                               width: 10.0,
                             ),
-                            Articles(),
+                            sellcard(),
                             SizedBox(
                               width: 10.0,
                             ),
@@ -133,8 +133,8 @@ void updateFirestoreValue(String documentId, String newValue) async {
   }
 }
 
-class Articles extends StatelessWidget {
-  const Articles({
+class sellcard extends StatelessWidget {
+  const sellcard({
     super.key,
   });
 
