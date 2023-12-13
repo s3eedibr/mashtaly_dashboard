@@ -30,6 +30,8 @@ class MenuController extends GetxController {
 
       case sellPlantPageDisplayName:
         return _customIcon(Icons.monetization_on, itemName);
+      case postPlantPageDisplayName:
+        return _customIcon(Icons.post_add, itemName);
       default:
         return _customIcon(Icons.exit_to_app, itemName);
     }

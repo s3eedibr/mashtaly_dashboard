@@ -12,6 +12,8 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Text(
       text,
       style: TextStyle(

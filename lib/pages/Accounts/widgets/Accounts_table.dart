@@ -58,7 +58,7 @@ class _AccountTableState extends State<AccountTableScreen> {
                 headingRowHeight: 40,
                 horizontalMargin: 12,
                 minWidth: 600,
-                columns: const [
+                columns: [
                   DataColumn2(label: Text(''), size: ColumnSize.S),
                   DataColumn2(
                     label: Text("Name"),
@@ -86,15 +86,9 @@ class _AccountTableState extends State<AccountTableScreen> {
                           ),
                           DataCell(Text('${account['name']}')),
                           DataCell(CustomText(text: '${account['email']}')),
-                          DataCell(Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                width: 5,
-                              ),
-                              CustomText(text: '${account['id']}'),
-                            ],
-                          )),
+                          DataCell(
+                            CustomText(text: '${account['id']}'),
+                          ),
                           DataCell(
                             IconButton(
                               icon: const Image(

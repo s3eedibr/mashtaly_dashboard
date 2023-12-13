@@ -18,6 +18,9 @@ const settingPageRoute = "/Setting";
 const sellPlantPageDisplayName = "SellPlant";
 const sellPlantPageRoute = "/SellPlant";
 
+const postPlantPageDisplayName = "Posts";
+const postPlantPageRoute = "/Posts";
+
 class MenuItem {
   final String name;
   final String route;
@@ -30,6 +33,7 @@ List<MenuItem> sideMenuItemRoutes = [
   MenuItem(plantPageDisplayName, plantsPageRoute),
   MenuItem(accountsPageDisplayName, accountsPageRoute),
   MenuItem(sellPlantPageDisplayName, sellPlantPageRoute),
+  MenuItem(postPlantPageDisplayName, postPlantPageRoute),
   MenuItem(settingPageDisplayName, settingPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];

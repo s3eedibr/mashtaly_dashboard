@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: overviewPageRoute,
+      initialRoute: authenticationPageRoute,
       unknownRoute: GetPage(
           name: '/not-found',
           page: () => const PageNotFound(),

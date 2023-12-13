@@ -6,6 +6,8 @@ import 'package:mashtaly_dashboard/pages/overview/overview.dart';
 import 'package:mashtaly_dashboard/pages/setting/setting.dart';
 import 'package:mashtaly_dashboard/routing/routes.dart';
 
+import '../pages/Post.dart/Posts.dart';
+
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case overviewPageRoute:
@@ -18,6 +20,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(const SettingPage());
     case sellPlantPageRoute:
       return _getPageRoute(const SellPlantsPage());
+    case postPlantPageRoute:
+      return _getPageRoute(const PostPage());
     default:
       return _getPageRoute(const OverviewPage());
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,13 @@ class _AuthenticationState extends State<AuthenticationPage>
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emilController.text.trim(),
             password: _passwordController.text.trim());
-        Get.offAllNamed(rootRoute);
+        String uid = FirebaseAuth.instance.currentUser!.uid;
+        bool isAdmin = await isAdminUser(uid);
+        if (!isAdmin) {
+          showSankBar(context, 'No user found for that email.');
+          await FirebaseAuth.instance.signOut();
+        } else
+          Get.offAllNamed(rootRoute);
       } on FirebaseAuthException catch (e) {
         print(e.code);
         if (e.code == 'user-not-found') {
@@ -47,6 +54,21 @@ class _AuthenticationState extends State<AuthenticationPage>
       }
       isloading = false;
       setState(() {});
+    }
+  }
+
+  Future<bool> isAdminUser(String uid) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+      if (userSnapshot.exists) {
+        return userSnapshot['isAdmin'] ?? false;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error checking admin status: $e');
+      return false;
     }
   }
 
