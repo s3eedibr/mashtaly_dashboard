@@ -25,15 +25,71 @@ class SideMenu extends StatelessWidget {
                     itemName: item.name,
                     onTap: () async {
                       if (item.route == authenticationPageRoute) {
-                        Get.offAllNamed(authenticationPageRoute);
-                        await FirebaseAuth.instance.signOut();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Container(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 250.0),
+                                  child: Text(
+                                    'are you sure you want to logout?',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  )),
+                              actions: [
+                                Container(
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: MaterialButton(
+                                      height: 50.0,
+                                      child: const Text(
+                                        'yes',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        Get.offAllNamed(
+                                            authenticationPageRoute);
+                                        await FirebaseAuth.instance.signOut();
+                                      }),
+                                ),
+                                Container(
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange[800],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: MaterialButton(
+                                      height: 50.0,
+                                      child: const Text(
+                                        'no',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
+                                ),
+                              ],
+                            );
+                          },
+                        );
 
                         menuController
                             .changeActiveItemTo(overviewPageDisplayName);
-                      }
-                      if (!menuController.isActive(item.name)) {
+                      } else if (!menuController.isActive(item.name)) {
                         menuController.changeActiveItemTo(item.name);
-
                         navigationController.navigateTo(item.route);
                       }
                     }))

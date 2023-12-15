@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mashtaly_dashboard/constants/colors.dart';
 import 'package:mashtaly_dashboard/constants/image_strings.dart';
 import 'package:mashtaly_dashboard/constants/style.dart';
 import 'package:mashtaly_dashboard/widgets/custom_text.dart';
@@ -103,18 +105,16 @@ class _AccountTableState extends State<AccountTableScreen> {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       content: Container(
-                                          constraints: const BoxConstraints(
-                                              maxWidth: 600.0),
                                           child: AccountDialogContent(
-                                            userid: account['id'],
-                                          )),
+                                        userid: account['id'],
+                                      )),
                                       actions: [
                                         MaterialButton(
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(
                                                   10.0), // Adjust the radius as needed
                                             ),
-                                            color: Colors.green,
+                                            color: tPrimaryActionColor,
                                             height: 50.0,
                                             child: const Text(
                                               'Reset Password',
@@ -124,7 +124,89 @@ class _AccountTableState extends State<AccountTableScreen> {
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            onPressed: () {}),
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content: Container(
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                              maxWidth: 200.0),
+                                                      child: Text(
+                                                        'are you sure you want to send rest email?',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 17),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      Container(
+                                                        width: 150,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              tPrimaryActionColor,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: MaterialButton(
+                                                            height: 50.0,
+                                                            child: const Text(
+                                                              'yes',
+                                                              style: TextStyle(
+                                                                fontSize: 20.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              _resetPassword(
+                                                                  account[
+                                                                      'email']);
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }),
+                                                      ),
+                                                      Container(
+                                                        width: 150,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors
+                                                              .orange[800],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: MaterialButton(
+                                                            height: 50.0,
+                                                            child: const Text(
+                                                              'no',
+                                                              style: TextStyle(
+                                                                fontSize: 20.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }),
                                         const SizedBox(
                                           width: 20.0,
                                         ),
@@ -133,7 +215,7 @@ class _AccountTableState extends State<AccountTableScreen> {
                                               borderRadius: BorderRadius.circular(
                                                   10.0), // Adjust the radius as needed
                                             ),
-                                            color: Colors.green,
+                                            color: tPrimaryActionColor,
                                             height: 50.0,
                                             child: const Text(
                                               'Activate',
@@ -144,8 +226,87 @@ class _AccountTableState extends State<AccountTableScreen> {
                                               ),
                                             ),
                                             onPressed: () {
-                                              activeAccountInFirebase(
-                                                  account['id'], true);
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content: Container(
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                              maxWidth: 200.0),
+                                                      child: Text(
+                                                        'are you sure you want to activate this account?',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 17),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      Container(
+                                                        width: 150,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              tPrimaryActionColor,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: MaterialButton(
+                                                            height: 50.0,
+                                                            child: const Text(
+                                                              'yes',
+                                                              style: TextStyle(
+                                                                fontSize: 20.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              activeAccountInFirebase(
+                                                                  account['id'],
+                                                                  true);
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }),
+                                                      ),
+                                                      Container(
+                                                        width: 150,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors
+                                                              .orange[800],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: MaterialButton(
+                                                            height: 50.0,
+                                                            child: const Text(
+                                                              'no',
+                                                              style: TextStyle(
+                                                                fontSize: 20.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
                                             }),
                                         const SizedBox(
                                           width: 20.0,
@@ -166,12 +327,87 @@ class _AccountTableState extends State<AccountTableScreen> {
                                             ),
                                           ),
                                           onPressed: () {
-                                            activeAccountInFirebase(
-                                                account['id'], false);
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: Container(
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            maxWidth: 200.0),
+                                                    child: Text(
+                                                      'are you sure you want to deactivate this account?',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 17),
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    Container(
+                                                      width: 150,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            tPrimaryActionColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: MaterialButton(
+                                                          height: 50.0,
+                                                          child: const Text(
+                                                            'yes',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            disableUserAccount(
+                                                                account['id']);
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                    ),
+                                                    Container(
+                                                      width: 150,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            Colors.orange[800],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: MaterialButton(
+                                                          height: 50.0,
+                                                          child: const Text(
+                                                            'no',
+                                                            style: TextStyle(
+                                                              fontSize: 20.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
                                           },
                                         ),
                                         const SizedBox(
-                                          width: 70.0,
+                                          width: 80.0,
                                         ),
                                       ],
                                     );
@@ -187,6 +423,19 @@ class _AccountTableState extends State<AccountTableScreen> {
               ),
       ),
     );
+  }
+}
+
+Future<void> _resetPassword(String email) async {
+  try {
+    await FirebaseAuth.instance.sendPasswordResetEmail(
+      email: email,
+    );
+    // Show a success message or navigate to a success screen
+    print('Password reset email sent successfully.');
+  } catch (e) {
+    // Show an error message
+    print('Error sending password reset email: $e');
   }
 }
 
@@ -207,5 +456,18 @@ void activeAccountInFirebase(String documentId, bool newValue) async {
     print('Document updated successfully');
   } catch (error) {
     print('Error updating document: $error');
+  }
+}
+
+Future<void> disableUserAccount(String userId) async {
+  try {
+    // Update the user profile in Firestore to indicate that the account is disabled
+    await FirebaseFirestore.instance.collection('Users').doc(userId).update({
+      'disabled': true,
+    });
+    User? user = FirebaseAuth.instance.currentUser;
+    await user?.delete();
+  } catch (e) {
+    print('Error disabling user account: $e');
   }
 }

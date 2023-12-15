@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SellDialogContent extends StatefulWidget {
-  String? id;
-  SellDialogContent({super.key, required this.id});
+  String? user_id, post_id;
+  SellDialogContent({super.key, required this.user_id, required this.post_id});
 
   @override
   State<SellDialogContent> createState() => _SellDialogContentState();
@@ -15,9 +15,14 @@ class _SellDialogContentState extends State<SellDialogContent> {
   CollectionReference users = FirebaseFirestore.instance.collection('Post');
   @override
   Widget build(BuildContext context) {
-    String? id = widget.id;
+    String? user_id = widget.user_id;
+    String? post_id = widget.post_id;
+    CollectionReference users = FirebaseFirestore.instance
+        .collection('SalePlants')
+        .doc(user_id)
+        .collection('SalePlants');
     return FutureBuilder<DocumentSnapshot>(
-        future: users.doc(id).get(),
+        future: users.doc(post_id).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -41,8 +46,11 @@ class _SellDialogContentState extends State<SellDialogContent> {
                       children: [
                         Image(
                           fit: BoxFit.cover,
-                          image: NetworkImage(data['profile_pic']),
-                          width: 500,
+                          image: NetworkImage(
+                            data['post_pic1'],
+                          ),
+                          width: 600,
+                          height: 300,
                         ),
                         SizedBox(
                           height: 20.0,
@@ -60,19 +68,19 @@ class _SellDialogContentState extends State<SellDialogContent> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            sellcard(),
+                            sellcard(img: data['post_pic2']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(),
+                            sellcard(img: data['post_pic3']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(),
+                            sellcard(img: data['post_pic4']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(),
+                            sellcard(img: data['post_pic5']),
                             SizedBox(
                               width: 10.0,
                             ),
@@ -89,14 +97,14 @@ class _SellDialogContentState extends State<SellDialogContent> {
                     child: Column(
                       children: [
                         Text(
-                          'Post Title',
+                          data['title'],
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more  ',
+                          data['contact'],
                           style: TextStyle(
                             fontSize: 23.0,
                           ),
@@ -113,47 +121,26 @@ class _SellDialogContentState extends State<SellDialogContent> {
   }
 }
 
-void updateFirestoreValue(String documentId, String newValue) async {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference users = firestore.collection('Users');
-
-  try {
-    // Get the reference to the document you want to update
-    DocumentReference userRef = users.doc(documentId);
-
-    // Update the specific field with the new value
-    await userRef.update({
-      'fieldName': newValue,
-      // Add more fields to update if needed
-    });
-
-    print('Document updated successfully');
-  } catch (error) {
-    print('Error updating document: $error');
-  }
-}
-
 class sellcard extends StatelessWidget {
-  const sellcard({
-    super.key,
-  });
+  String? img;
+  sellcard({super.key, required this.img});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 200.0,
-          height: 100.0,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    'https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg')),
-          ),
-        ),
-      ],
-    );
+    return img == ''
+        ? Container()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 200.0,
+                height: 100.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.cover, image: NetworkImage(img!)),
+                ),
+              ),
+            ],
+          );
   }
 }

@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mashtaly_dashboard/pages/SellPlant.dart/widgets/sellDialog.dart';
 
 import '../../../constants/image_strings.dart';
+import '../../../getData/getData.dart';
+import 'PostDialog.dart';
 
 class PostTableScreen extends StatefulWidget {
   @override
@@ -12,8 +14,6 @@ class PostTableScreen extends StatefulWidget {
 }
 
 class _PostsTableState extends State<PostTableScreen> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference sellPost = FirebaseFirestore.instance.collection('Post');
   List<Map<String, dynamic>>? plantData;
   @override
   void initState() {
@@ -22,13 +22,9 @@ class _PostsTableState extends State<PostTableScreen> {
   }
 
   Future<void> fetchDataFromFirebase() async {
-    QuerySnapshot querySnapshot = await sellPost.get();
-    setState(() {
-      plantData = querySnapshot.docs
-          .map((DocumentSnapshot document) =>
-              document.data() as Map<String, dynamic>)
-          .toList();
-    });
+    await Future.delayed(Duration(seconds: 1));
+    plantData = await getAllPosts();
+    setState(() {});
   }
 
   @override
@@ -62,22 +58,25 @@ class _PostsTableState extends State<PostTableScreen> {
                       label: Text("ID"),
                       size: ColumnSize.L,
                     ),
-                    // DataColumn(
-                    //   label: Text('Name'),
-                    // ),
-                    // DataColumn(
-                    //   label: Text('Date'),
-                    // ),
                     DataColumn(
-                      label: Text('plant'),
+                      label: Text('Date'),
+                    ),
+                    DataColumn(
+                      label: Text('Status'),
+                    ),
+                    DataColumn(
+                      label: Text('Post'),
                     ),
                   ],
                   rows: plantData!
                       .map(
-                        (sellPost) => DataRow(
+                        (post) => DataRow(
                           cells: [
-                            DataCell(Text('${sellPost['ID']}')),
-                            // DataCell(Text('${plant['Date']}')),
+                            DataCell(Text('${post['id']}')),
+                            DataCell(Text('${post['date']}')),
+                            DataCell(Text('true' == '${post['posted']}'
+                                ? 'Accepted'
+                                : 'Rejected')),
                             DataCell(InkWell(
                               onTap: () {},
                               child: IconButton(
@@ -94,9 +93,13 @@ class _PostsTableState extends State<PostTableScreen> {
                                         return AlertDialog(
                                           content: Container(
                                               constraints: const BoxConstraints(
-                                                  maxWidth: 600.0),
-                                              child: SellDialogContent(
-                                                id: sellPost['ID'],
+                                                maxWidth: 850,
+                                                minWidth: 850.0,
+                                                minHeight: 800,
+                                              ),
+                                              child: PostDialogContent(
+                                                user_id: post['user_id'],
+                                                post_id: post['post_id'],
                                               )),
                                           actions: [
                                             Container(
@@ -170,7 +173,8 @@ class _PostsTableState extends State<PostTableScreen> {
                                                                       onPressed:
                                                                           () {
                                                                         approvePostInFirebase(
-                                                                            sellPost['ID'],
+                                                                            post['user_id'],
+                                                                            post['post_id'],
                                                                             true);
                                                                         Navigator.pop(
                                                                             context);
@@ -283,7 +287,8 @@ class _PostsTableState extends State<PostTableScreen> {
                                                                       onPressed:
                                                                           () {
                                                                         approvePostInFirebase(
-                                                                            sellPost['ID'],
+                                                                            post['user_id'],
+                                                                            post['post_id'],
                                                                             false);
                                                                         Navigator.pop(
                                                                             context);
@@ -331,7 +336,7 @@ class _PostsTableState extends State<PostTableScreen> {
                                                   }),
                                             ),
                                             const SizedBox(
-                                              width: 150,
+                                              width: 270,
                                             ),
                                           ],
                                         );
@@ -348,9 +353,11 @@ class _PostsTableState extends State<PostTableScreen> {
   }
 }
 
-void approvePostInFirebase(String documentId, bool newValue) async {
+void approvePostInFirebase(
+    String userId, String documentId, bool newValue) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference post = firestore.collection('Post');
+  CollectionReference post =
+      firestore.collection('posts').doc(userId).collection('Posts');
 
   try {
     // Get the reference to the document you want to update
@@ -358,7 +365,7 @@ void approvePostInFirebase(String documentId, bool newValue) async {
 
     // Update the specific field with the new value
     await userRef.update({
-      'approve': newValue,
+      'posted': newValue,
       // Add more fields to update if needed
     });
 
