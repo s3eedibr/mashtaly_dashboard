@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mashtaly_dashboard/constants/colors.dart';
 import 'package:mashtaly_dashboard/constants/image_strings.dart';
 import 'package:mashtaly_dashboard/constants/style.dart';
+import 'package:mashtaly_dashboard/pages/authentication/restPass.dart';
 import 'package:mashtaly_dashboard/routing/routes.dart';
 import 'package:mashtaly_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
@@ -31,22 +32,47 @@ class _AuthenticationState extends State<AuthenticationPage>
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emilController.text.trim(),
             password: _passwordController.text.trim());
-        Get.offAllNamed(rootRoute);
+        String uid = FirebaseAuth.instance.currentUser!.uid;
+
+        bool isAdmin = await isAdminUser(uid);
+        if (!isAdmin) {
+          showSankBar(context, 'No user found for that email.');
+          await FirebaseAuth.instance.signOut();
+        } else
+          Get.offAllNamed(rootRoute);
       } on FirebaseAuthException catch (e) {
         print(e.code);
-        if (e.code == 'user-not-found') {
-          showSankBar(context, 'No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          showSankBar(context, 'Wrong password provided for that user.');
+        if (e.code == 'invalid-credential') {
+          showSankBar(context, 'Incorrect email or password.');
         } else if (e.code == 'user-disabled') {
           showSankBar(context,
               'The user account has been disabled by an administrator.');
+        } else if (e.code == 'invalid-email') {
+          showSankBar(context, 'The email address is badly formatted');
+        } else if (e.code == 'too-many-requests') {
+          showSankBar(context,
+              'Access to this account has been temporarily disabled due to  many  failed  login attempts');
         }
       } catch (e) {
         showSankBar(context, e.toString());
       }
       isloading = false;
       setState(() {});
+    }
+  }
+
+  Future<bool> isAdminUser(String uid) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+      if (userSnapshot.exists) {
+        return userSnapshot['isAdmin'] ?? false;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error checking admin status: $e');
+      return false;
     }
   }
 
@@ -89,23 +115,6 @@ class _AuthenticationState extends State<AuthenticationPage>
         child: ModalProgressHUD(
       inAsyncCall: isloading,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: tBgColor,
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Text(
-                  'Mashtaly Dashboard',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         body: Center(
           child: Container(
             decoration: const BoxDecoration(
@@ -231,9 +240,19 @@ class _AuthenticationState extends State<AuthenticationPage>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const CustomText(
-                                  text: "Forgot password?",
-                                  color: tPrimaryActionColor)
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RestPasswordPage()),
+                                  );
+                                },
+                                child: CustomText(
+                                    text: "Forgot password?",
+                                    color: tPrimaryActionColor),
+                              ),
                             ],
                           ),
                           const SizedBox(

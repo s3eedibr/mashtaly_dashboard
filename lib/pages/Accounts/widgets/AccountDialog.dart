@@ -108,7 +108,7 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            buildPostList('${account['id']}'),
+                            buildSaleList('${account['id']}'),
                           ],
                         ),
                       ),
@@ -123,31 +123,53 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
   }
 
   Widget buildPostList(String id) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {});
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {});
+      },
+      color: tPrimaryActionColor,
+      backgroundColor: tBgColor,
+      child: FutureBuilder<List<Map<String, dynamic>>>(
+        // Fetch all posts using the getMyPosts() function
+        future: getMyPosts(id),
+        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return buildShimmerList(); // Display shimmer loading animation while waiting for data
+          } else if (snapshot.hasError) {
+            return buildErrorWidget(snapshot.error
+                .toString()); // Display error message if an error occurs
+          } else {
+            return buildPostsListView(
+                snapshot.data!); // Build the post list view
+          }
         },
-        color: tPrimaryActionColor,
-        backgroundColor: tBgColor,
-        child: FutureBuilder<List<Map<String, dynamic>>>(
-          // Fetch all posts using the getMyPosts() function
-          future: getMyPosts(id),
-          builder:
-              (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting ||
-                !snapshot.hasData) {
-              return buildShimmerList(); // Display shimmer loading animation while waiting for data
-            } else if (snapshot.hasError) {
-              return buildErrorWidget(snapshot.error
-                  .toString()); // Display error message if an error occurs
-            } else {
-              return buildPostsListView(
-                  snapshot.data!); // Build the post list view
-            }
-          },
-        ),
+      ),
+    );
+  }
+
+  Widget buildSaleList(String id) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {});
+      },
+      color: tPrimaryActionColor,
+      backgroundColor: tBgColor,
+      child: FutureBuilder<List<Map<String, dynamic>>>(
+        // Fetch all posts using the getMyPosts() function
+        future: getMySells(id),
+        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return buildShimmerList(); // Display shimmer loading animation while waiting for data
+          } else if (snapshot.hasError) {
+            return buildErrorWidget(snapshot.error
+                .toString()); // Display error message if an error occurs
+          } else {
+            return buildSaleListView(
+                snapshot.data!); // Build the post list view
+          }
+        },
       ),
     );
   }
@@ -166,7 +188,7 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
 
   Widget buildPostsListView(List<Map<String, dynamic>> posts) {
     return SizedBox(
-      width: 600,
+      width: 650,
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -177,6 +199,28 @@ class _AccountDialogContentState extends State<AccountDialogContent> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: AccountCard(
               pic: post['post_pic1'],
+              title: post['title'],
+              name: post['user'],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildSaleListView(List<Map<String, dynamic>> posts) {
+    return SizedBox(
+      width: 650,
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: posts.length,
+        itemBuilder: (context, index) {
+          final post = posts[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: AccountCard(
+              pic: post['sale_pic1'],
               title: post['title'],
               name: post['user'],
             ),

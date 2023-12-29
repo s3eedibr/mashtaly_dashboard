@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 Future<List<Map<String, dynamic>>> getAllData(String collectionName) async {
   List<Map<String, dynamic>> allData = [];
 
-  final userUidsRef = FirebaseFirestore.instance.collection('users');
+  final userUidsRef = FirebaseFirestore.instance.collection('Users');
 
   try {
     // Get a snapshot of all user documents
@@ -17,12 +17,12 @@ Future<List<Map<String, dynamic>>> getAllData(String collectionName) async {
       final userPostsRef = FirebaseFirestore.instance
           .collection(collectionName)
           .doc(userId)
-          .collection(collectionName == 'posts' ? 'Posts' : 'SellPlants');
+          .collection(collectionName == 'posts' ? 'Posts' : 'SalePlants');
 
       try {
         // Get a snapshot of data for the current user, ordered by date in descending order
         QuerySnapshot userDataSnapshot = await userPostsRef
-            .where('posted', isEqualTo: true)
+            .where('posted', isEqualTo: false)
             .orderBy('date', descending: true)
             .get();
 
@@ -54,7 +54,7 @@ Future<List<Map<String, dynamic>>> getAllPosts() async {
 
 // Example usage for getting all sell posts
 Future<List<Map<String, dynamic>>> getAllSellPosts() async {
-  return await getAllData('sellPlants');
+  return await getAllData('SalePlants');
 }
 
 // Example usage for getting the latest posts (limited to 3)
@@ -65,7 +65,7 @@ Future<List<Map<String, dynamic>>> getLatestPosts() async {
 
 // Example usage for getting the latest sell posts (limited to 3)
 Future<List<Map<String, dynamic>>> getLatestSellPosts() async {
-  List<Map<String, dynamic>> latestSellPosts = await getAllData('sellPlants');
+  List<Map<String, dynamic>> latestSellPosts = await getAllData('SalePlants');
   return latestSellPosts.take(3).toList();
 }
 
@@ -76,7 +76,7 @@ Future<List<Map<String, dynamic>>> getMyData(
   final userPostsRef = FirebaseFirestore.instance
       .collection(collectionName)
       .doc(userId)
-      .collection(collectionName == 'posts' ? 'Posts' : 'SellPlants');
+      .collection(collectionName == 'posts' ? 'Posts' : 'SalePlants');
 
   try {
     // Get a snapshot of data for the current user, ordered by date in descending order
@@ -108,5 +108,18 @@ Future<List<Map<String, dynamic>>> getMyPosts(String userId) async {
 
 // Example usage for getting sell posts for the current user
 Future<List<Map<String, dynamic>>> getMySells(String userId) async {
-  return await getMyData('sellPlants', userId);
+  return await getMyData('SalePlants', userId);
+}
+
+Future<List<Map<String, dynamic>>> getAllDataReport() async {
+  List<Map<String, dynamic>> allData = [], allPost = [], allSale = [];
+  allPost = await getAllData('posts');
+  allSale = await getAllData('SalePlants');
+  allData.addAll(allPost);
+  allData.addAll(allSale);
+
+  // Sort the list in descending order by date
+  allData.sort((a, b) => b['date'].compareTo(a['date']));
+
+  return allData;
 }

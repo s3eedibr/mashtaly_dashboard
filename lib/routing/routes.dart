@@ -12,11 +12,14 @@ const accountsPageRoute = "/Accounts";
 const authenticationPageDisplayName = "Log out";
 const authenticationPageRoute = "/auth";
 
-const settingPageDisplayName = "Setting";
-const settingPageRoute = "/Setting";
+const ReportingPageDisplayName = "Reporting";
+const ReportingPageRoute = "/Reporting";
 
 const sellPlantPageDisplayName = "SellPlant";
 const sellPlantPageRoute = "/SellPlant";
+
+const postPlantPageDisplayName = "Posts";
+const postPlantPageRoute = "/Posts";
 
 class MenuItem {
   final String name;
@@ -30,6 +33,7 @@ List<MenuItem> sideMenuItemRoutes = [
   MenuItem(plantPageDisplayName, plantsPageRoute),
   MenuItem(accountsPageDisplayName, accountsPageRoute),
   MenuItem(sellPlantPageDisplayName, sellPlantPageRoute),
-  MenuItem(settingPageDisplayName, settingPageRoute),
+  MenuItem(postPlantPageDisplayName, postPlantPageRoute),
+  MenuItem(ReportingPageDisplayName, ReportingPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];

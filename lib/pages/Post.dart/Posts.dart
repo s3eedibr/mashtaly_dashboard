@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mashtaly_dashboard/Constants/colors.dart';
 import 'package:mashtaly_dashboard/constants/controllers.dart';
-import 'package:mashtaly_dashboard/pages/Plants/widgets/Plants_table.dart';
-import 'package:mashtaly_dashboard/pages/SellPlant.dart/widgets/sellPlants_table.dart';
+import 'package:mashtaly_dashboard/pages/Post.dart/widgets/Posts_table.dart';
 import 'package:mashtaly_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
 
-class SellPlantsPage extends StatelessWidget {
-  const SellPlantsPage({Key? key}) : super(key: key);
+class PostPage extends StatelessWidget {
+  const PostPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class SellPlantsPage extends StatelessWidget {
         ),
         Expanded(
             child: ListView(
-          children: [SellPlantsTableScreen()],
+          children: [PostTableScreen()],
         )),
       ],
     );

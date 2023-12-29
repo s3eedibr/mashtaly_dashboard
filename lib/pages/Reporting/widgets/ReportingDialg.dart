@@ -1,41 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mashtaly_dashboard/constants/colors.dart';
 
-class SellDialogContent extends StatefulWidget {
+class ReportingDialogContent extends StatefulWidget {
   String? user_id, post_id;
-  SellDialogContent({super.key, required this.user_id, required this.post_id});
+  ReportingDialogContent(
+      {super.key, required this.user_id, required this.post_id});
 
   @override
-  State<SellDialogContent> createState() => _SellDialogContentState();
+  State<ReportingDialogContent> createState() => _ReportingDialogContentState();
 }
 
-class _SellDialogContentState extends State<SellDialogContent> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('Post');
+class _ReportingDialogContentState extends State<ReportingDialogContent> {
   @override
   Widget build(BuildContext context) {
     String? user_id = widget.user_id;
     String? post_id = widget.post_id;
-    CollectionReference users = FirebaseFirestore.instance
-        .collection('SalePlants')
+    CollectionReference dataFromFire = FirebaseFirestore.instance
+        .collection('posts')
         .doc(user_id)
-        .collection('SalePlants');
-    return FutureBuilder<DocumentSnapshot>(
-        future: users.doc(post_id).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        .collection('Posts');
+
+    return FutureBuilder<QuerySnapshot>(
+        future: dataFromFire.where('id', isEqualTo: post_id).get(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
 
-          if (snapshot.hasData && !snapshot.data!.exists) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading...");
+          }
+
+          if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
             return Text("Document does not exist");
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
-                snapshot.data!.data() as Map<String, dynamic>;
+                snapshot.data!.docs[0].data() as Map<String, dynamic>;
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -48,7 +50,7 @@ class _SellDialogContentState extends State<SellDialogContent> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            data['sale_pic1'],
+                            data['post_pic1'],
                             width: 600,
                             height: 300,
                             fit: BoxFit.cover,
@@ -66,8 +68,8 @@ class _SellDialogContentState extends State<SellDialogContent> {
                                 StackTrace? stackTrace) {
                               return Image.asset(
                                 'assets/images/default_plant.jpg',
-                                width: 600,
-                                height: 300,
+                                width: 108,
+                                height: 108,
                                 fit: BoxFit.cover,
                               );
                             },
@@ -86,19 +88,19 @@ class _SellDialogContentState extends State<SellDialogContent> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            sellcard(img: data['sale_pic2']),
+                            postcard(img: data['post_pic2']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(img: data['sale_pic3']),
+                            postcard(img: data['post_pic3']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(img: data['sale_pic4']),
+                            postcard(img: data['post_pic4']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(img: data['sale_pic5']),
+                            postcard(img: data['post_pic5']),
                             SizedBox(
                               width: 10.0,
                             ),
@@ -114,29 +116,15 @@ class _SellDialogContentState extends State<SellDialogContent> {
                     alignment: Alignment.centerLeft,
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              data['title'],
-                              style: TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15.0,
-                            ),
-                            Text(
-                              data['phone_number'],
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                color: tPrimaryActionColor,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          data['title'],
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
-                          data['content'],
+                          data['contact'],
                           style: TextStyle(
                             fontSize: 23.0,
                           ),
@@ -153,9 +141,9 @@ class _SellDialogContentState extends State<SellDialogContent> {
   }
 }
 
-class sellcard extends StatelessWidget {
+class postcard extends StatelessWidget {
   String? img;
-  sellcard({super.key, required this.img});
+  postcard({super.key, required this.img});
 
   @override
   Widget build(BuildContext context) {
@@ -165,12 +153,12 @@ class sellcard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 200.0,
-                height: 100.0,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
                     img!,
+                    width: 200.0,
+                    height: 100.0,
                     fit: BoxFit.cover,
                     loadingBuilder: (BuildContext context, Widget child,
                         ImageChunkEvent? loadingProgress) {
@@ -186,8 +174,8 @@ class sellcard extends StatelessWidget {
                         StackTrace? stackTrace) {
                       return Image.asset(
                         'assets/images/default_plant.jpg',
-                        width: 200.0,
-                        height: 100.0,
+                        width: 108,
+                        height: 108,
                         fit: BoxFit.cover,
                       );
                     },

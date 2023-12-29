@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mashtaly_dashboard/pages/SellPlant.dart/widgets/sellDialog.dart';
 
 import '../../../constants/image_strings.dart';
+import '../../../getData/getData.dart';
 
 class SellPlantsTableScreen extends StatefulWidget {
   @override
@@ -12,8 +13,6 @@ class SellPlantsTableScreen extends StatefulWidget {
 }
 
 class _SellPlantsTableState extends State<SellPlantsTableScreen> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference sellPost = FirebaseFirestore.instance.collection('Post');
   List<Map<String, dynamic>>? plantData;
   @override
   void initState() {
@@ -22,13 +21,9 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
   }
 
   Future<void> fetchDataFromFirebase() async {
-    QuerySnapshot querySnapshot = await sellPost.get();
-    setState(() {
-      plantData = querySnapshot.docs
-          .map((DocumentSnapshot document) =>
-              document.data() as Map<String, dynamic>)
-          .toList();
-    });
+    await Future.delayed(Duration(seconds: 1));
+    plantData = await getAllSellPosts();
+    setState(() {});
   }
 
   @override
@@ -48,7 +43,7 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 30),
       child: SizedBox(
-          height: (60 * 7) + 40,
+          height: 700,
           child: plantData == null
               ? Center(child: CircularProgressIndicator())
               : DataTable2(
@@ -62,22 +57,19 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                       label: Text("ID"),
                       size: ColumnSize.L,
                     ),
-                    // DataColumn(
-                    //   label: Text('Name'),
-                    // ),
-                    // DataColumn(
-                    //   label: Text('Date'),
-                    // ),
                     DataColumn(
-                      label: Text('plant'),
+                      label: Text('Date'),
+                    ),
+                    DataColumn(
+                      label: Text('SellPost'),
                     ),
                   ],
                   rows: plantData!
                       .map(
                         (sellPost) => DataRow(
                           cells: [
-                            DataCell(Text('${sellPost['ID']}')),
-                            // DataCell(Text('${plant['Date']}')),
+                            DataCell(Text('${sellPost['id']}')),
+                            DataCell(Text('${sellPost['date']}')),
                             DataCell(InkWell(
                               onTap: () {},
                               child: IconButton(
@@ -94,9 +86,13 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                                         return AlertDialog(
                                           content: Container(
                                               constraints: const BoxConstraints(
-                                                  maxWidth: 600.0),
+                                                maxWidth: 850,
+                                                minWidth: 850.0,
+                                                minHeight: 800,
+                                              ),
                                               child: SellDialogContent(
-                                                id: sellPost['ID'],
+                                                user_id: sellPost['user_id'],
+                                                post_id: sellPost['post_id'],
                                               )),
                                           actions: [
                                             Container(
@@ -170,7 +166,8 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                                                                       onPressed:
                                                                           () {
                                                                         approvePostInFirebase(
-                                                                            sellPost['ID'],
+                                                                            sellPost['user_id'],
+                                                                            sellPost['post_id'],
                                                                             true);
                                                                         Navigator.pop(
                                                                             context);
@@ -283,7 +280,8 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                                                                       onPressed:
                                                                           () {
                                                                         approvePostInFirebase(
-                                                                            sellPost['ID'],
+                                                                            sellPost['user_id'],
+                                                                            sellPost['post_id'],
                                                                             false);
                                                                         Navigator.pop(
                                                                             context);
@@ -331,7 +329,7 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                                                   }),
                                             ),
                                             const SizedBox(
-                                              width: 150,
+                                              width: 270,
                                             ),
                                           ],
                                         );
@@ -348,9 +346,11 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
   }
 }
 
-void approvePostInFirebase(String documentId, bool newValue) async {
+void approvePostInFirebase(
+    String userId, String documentId, bool newValue) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference post = firestore.collection('Post');
+  CollectionReference post =
+      firestore.collection('posts').doc(userId).collection('Posts');
 
   try {
     // Get the reference to the document you want to update
@@ -358,7 +358,7 @@ void approvePostInFirebase(String documentId, bool newValue) async {
 
     // Update the specific field with the new value
     await userRef.update({
-      'approve': newValue,
+      'posted': newValue,
       // Add more fields to update if needed
     });
 
