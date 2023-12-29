@@ -7,14 +7,14 @@ import 'package:mashtaly_dashboard/pages/SellPlant.dart/widgets/sellDialog.dart'
 
 import '../../../constants/image_strings.dart';
 import '../../../getData/getData.dart';
-import 'PostDialog.dart';
+import 'ReportingDialg.dart';
 
-class PostTableScreen extends StatefulWidget {
+class ReportingTableScreen extends StatefulWidget {
   @override
-  _PostsTableState createState() => _PostsTableState();
+  _ReportingTableState createState() => _ReportingTableState();
 }
 
-class _PostsTableState extends State<PostTableScreen> {
+class _ReportingTableState extends State<ReportingTableScreen> {
   List<Map<String, dynamic>>? plantData;
   @override
   void initState() {
@@ -24,7 +24,8 @@ class _PostsTableState extends State<PostTableScreen> {
 
   Future<void> fetchDataFromFirebase() async {
     await Future.delayed(Duration(seconds: 1));
-    plantData = await getAllPosts();
+    plantData = await getAllDataReport();
+
     setState(() {});
   }
 
@@ -98,7 +99,7 @@ class _PostsTableState extends State<PostTableScreen> {
                                                 minWidth: 850.0,
                                                 minHeight: 800,
                                               ),
-                                              child: PostDialogContent(
+                                              child: ReportingDialogContent(
                                                 user_id: post['user_id'],
                                                 post_id: post['id'],
                                               )),
@@ -191,21 +192,10 @@ class _PostsTableState extends State<PostTableScreen> {
                                                           content: Container(
                                                             constraints:
                                                                 const BoxConstraints(
-                                                              maxWidth: 200.0,
-                                                              maxHeight: 60,
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                TextField(
-                                                                  decoration: InputDecoration(
-                                                                      labelText:
-                                                                          'reason for rejection',
-                                                                      border: OutlineInputBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20))),
-                                                                ),
-                                                              ],
-                                                            ),
+                                                                    maxWidth:
+                                                                        200.0),
+                                                            child: Text(
+                                                                'Are you sure?'),
                                                           ),
                                                           actions: [
                                                             _buildButton('Yes',
@@ -262,22 +252,21 @@ class DateParse extends StatelessWidget {
   }
 }
 
-void approvePostInFirebase(String userId, String post_id, bool newValue) async {
+void approvePostInFirebase(
+    String userId, String documentId, bool newValue) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference post =
       firestore.collection('posts').doc(userId).collection('Posts');
 
   try {
     // Get the reference to the document you want to update
-    QuerySnapshot userRef = await post.where('id', isEqualTo: post_id).get();
-    for (QueryDocumentSnapshot documentSnapshot in userRef.docs) {
-      // Get the reference to the document
-      DocumentReference documentReference = post.doc(documentSnapshot.id);
-      // Update the specific field with the new value
-      await documentReference.update({
-        'posted': newValue,
-      });
-    }
+    DocumentReference userRef = post.doc(documentId);
+
+    // Update the specific field with the new value
+    await userRef.update({
+      'posted': newValue,
+      // Add more fields to update if needed
+    });
 
     print('Document updated successfully');
   } catch (error) {

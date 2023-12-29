@@ -14,29 +14,55 @@ class _AddPlantDialogState extends State<AddPlantDialog> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: Container(
-            child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        TextField(
-          decoration: InputDecoration(labelText: 'Plant Name'),
-        ),
-        SizedBox(height: 20),
-        Text('Add 5 Pictures:'),
-        // Here you can add widgets to add pictures (e.g., ImagePicker).
-        // For simplicity, let's just use a placeholder for each picture.
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(
-            5,
-            (index) => Container(
-              width: 50,
-              height: 50,
-              color: Colors.grey, // Placeholder for the picture
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
             ),
-          ),
+            SizedBox(
+              height: 15,
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: 'Plant Name'),
+            ),
+          ],
         ),
-      ],
-    )));
+      ),
+    );
   }
 }
+
+  // Widget _buildPlantImage() {
+  //   return Column(
+  //     children: [
+  //       GestureDetector(
+  //         onTap: () {
+  //           selectImageDialog(context);
+  //         },
+  //         child: Container(
+  //           height: 200,
+  //           width: 379.4,
+  //           clipBehavior: Clip.antiAlias,
+  //           decoration: const BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.all(
+  //               Radius.circular(6),
+  //             ),
+  //           ),
+  //           child: _image != null
+  //               ? Image.file(
+  //                   _image!,
+  //                   fit: BoxFit.cover,
+  //                 )
+  //               : const Icon(
+  //                   FontAwesomeIcons.plus,
+  //                   color: tSearchIconColor,
+  //                   size: 55,
+  //                 ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }

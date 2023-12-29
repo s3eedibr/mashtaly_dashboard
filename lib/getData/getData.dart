@@ -110,3 +110,16 @@ Future<List<Map<String, dynamic>>> getMyPosts(String userId) async {
 Future<List<Map<String, dynamic>>> getMySells(String userId) async {
   return await getMyData('SalePlants', userId);
 }
+
+Future<List<Map<String, dynamic>>> getAllDataReport() async {
+  List<Map<String, dynamic>> allData = [], allPost = [], allSale = [];
+  allPost = await getAllData('posts');
+  allSale = await getAllData('SalePlants');
+  allData.addAll(allPost);
+  allData.addAll(allSale);
+
+  // Sort the list in descending order by date
+  allData.sort((a, b) => b['date'].compareTo(a['date']));
+
+  return allData;
+}

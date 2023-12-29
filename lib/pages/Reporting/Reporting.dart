@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mashtaly_dashboard/Constants/colors.dart';
 import 'package:mashtaly_dashboard/constants/controllers.dart';
-import 'package:mashtaly_dashboard/pages/Reporting/widgets/Reporting.dart';
+import 'package:mashtaly_dashboard/pages/Reporting/widgets/Reporting_Table.dart';
 import 'package:mashtaly_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
 
@@ -29,7 +29,7 @@ class ReportingPage extends StatelessWidget {
           height: 15,
         ),
         Expanded(
-          child: ReportingTable(),
+          child: ReportingTableScreen(),
         ),
       ],
     );

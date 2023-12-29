@@ -82,8 +82,15 @@ class ProfileImage extends StatelessWidget {
                 snapshot.data!.data() as Map<String, dynamic>;
             return CircleAvatar(
               child: ClipOval(
-                child: Image.network(data['profile_pic'],
-                    width: 55, height: 55, fit: BoxFit.cover),
+                child: Container(
+                  color: tBgColor,
+                  child: Image.network(
+                    data['profile_pic'],
+                    width: 70,
+                    height: 70,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             );
           }

@@ -2,26 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PostDialogContent extends StatefulWidget {
+class ReportingDialogContent extends StatefulWidget {
   String? user_id, post_id;
-  PostDialogContent({super.key, required this.user_id, required this.post_id});
+  ReportingDialogContent(
+      {super.key, required this.user_id, required this.post_id});
 
   @override
-  State<PostDialogContent> createState() => _PostDialogContentState();
+  State<ReportingDialogContent> createState() => _ReportingDialogContentState();
 }
 
-class _PostDialogContentState extends State<PostDialogContent> {
+class _ReportingDialogContentState extends State<ReportingDialogContent> {
   @override
   Widget build(BuildContext context) {
     String? user_id = widget.user_id;
     String? post_id = widget.post_id;
-    CollectionReference users = FirebaseFirestore.instance
+    CollectionReference dataFromFire = FirebaseFirestore.instance
         .collection('posts')
         .doc(user_id)
         .collection('Posts');
 
     return FutureBuilder<QuerySnapshot>(
-        future: users.where('id', isEqualTo: post_id).get(),
+        future: dataFromFire.where('id', isEqualTo: post_id).get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");

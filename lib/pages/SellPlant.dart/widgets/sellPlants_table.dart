@@ -43,7 +43,7 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 30),
       child: SizedBox(
-          height: (60 * 7) + 40,
+          height: 700,
           child: plantData == null
               ? Center(child: CircularProgressIndicator())
               : DataTable2(

@@ -66,8 +66,8 @@ class _SellDialogContentState extends State<SellDialogContent> {
                                 StackTrace? stackTrace) {
                               return Image.asset(
                                 'assets/images/default_plant.jpg',
-                                width: 108,
-                                height: 108,
+                                width: 600,
+                                height: 300,
                                 fit: BoxFit.cover,
                               );
                             },
@@ -186,8 +186,8 @@ class sellcard extends StatelessWidget {
                         StackTrace? stackTrace) {
                       return Image.asset(
                         'assets/images/default_plant.jpg',
-                        width: 108,
-                        height: 108,
+                        width: 200.0,
+                        height: 100.0,
                         fit: BoxFit.cover,
                       );
                     },

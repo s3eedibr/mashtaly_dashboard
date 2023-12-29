@@ -43,12 +43,15 @@ class _AuthenticationState extends State<AuthenticationPage>
       } on FirebaseAuthException catch (e) {
         print(e.code);
         if (e.code == 'invalid-credential') {
-          showSankBar(context, 'Incorrect email or password');
+          showSankBar(context, 'Incorrect email or password.');
         } else if (e.code == 'user-disabled') {
           showSankBar(context,
               'The user account has been disabled by an administrator.');
         } else if (e.code == 'invalid-email') {
           showSankBar(context, 'The email address is badly formatted');
+        } else if (e.code == 'too-many-requests') {
+          showSankBar(context,
+              'Access to this account has been temporarily disabled due to  many  failed  login attempts');
         }
       } catch (e) {
         showSankBar(context, e.toString());
@@ -112,23 +115,6 @@ class _AuthenticationState extends State<AuthenticationPage>
         child: ModalProgressHUD(
       inAsyncCall: isloading,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: tBgColor,
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Text(
-                  'Mashtaly Dashboard',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         body: Center(
           child: Container(
             decoration: const BoxDecoration(
