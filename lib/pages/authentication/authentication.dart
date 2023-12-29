@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mashtaly_dashboard/constants/colors.dart';
 import 'package:mashtaly_dashboard/constants/image_strings.dart';
 import 'package:mashtaly_dashboard/constants/style.dart';
+import 'package:mashtaly_dashboard/pages/authentication/restPass.dart';
 import 'package:mashtaly_dashboard/routing/routes.dart';
 import 'package:mashtaly_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
@@ -33,6 +33,7 @@ class _AuthenticationState extends State<AuthenticationPage>
             email: _emilController.text.trim(),
             password: _passwordController.text.trim());
         String uid = FirebaseAuth.instance.currentUser!.uid;
+
         bool isAdmin = await isAdminUser(uid);
         if (!isAdmin) {
           showSankBar(context, 'No user found for that email.');
@@ -41,13 +42,13 @@ class _AuthenticationState extends State<AuthenticationPage>
           Get.offAllNamed(rootRoute);
       } on FirebaseAuthException catch (e) {
         print(e.code);
-        if (e.code == 'user-not-found') {
-          showSankBar(context, 'No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          showSankBar(context, 'Wrong password provided for that user.');
+        if (e.code == 'invalid-credential') {
+          showSankBar(context, 'Incorrect email or password');
         } else if (e.code == 'user-disabled') {
           showSankBar(context,
               'The user account has been disabled by an administrator.');
+        } else if (e.code == 'invalid-email') {
+          showSankBar(context, 'The email address is badly formatted');
         }
       } catch (e) {
         showSankBar(context, e.toString());
@@ -253,9 +254,19 @@ class _AuthenticationState extends State<AuthenticationPage>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const CustomText(
-                                  text: "Forgot password?",
-                                  color: tPrimaryActionColor)
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RestPasswordPage()),
+                                  );
+                                },
+                                child: CustomText(
+                                    text: "Forgot password?",
+                                    color: tPrimaryActionColor),
+                              ),
                             ],
                           ),
                           const SizedBox(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mashtaly_dashboard/constants/colors.dart';
 
 class SellDialogContent extends StatefulWidget {
   String? user_id, post_id;
@@ -44,16 +45,33 @@ class _SellDialogContentState extends State<SellDialogContent> {
                   Center(
                     child: Column(
                       children: [
-                        Image(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            data['post_pic1'],
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            data['sale_pic1'],
+                            width: 600,
+                            height: 300,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                            errorBuilder: (BuildContext context, Object error,
+                                StackTrace? stackTrace) {
+                              return Image.asset(
+                                'assets/images/default_plant.jpg',
+                                width: 108,
+                                height: 108,
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
-                          width: 600,
-                          height: 300,
-                        ),
-                        SizedBox(
-                          height: 20.0,
                         ),
                       ],
                     ),
@@ -68,19 +86,19 @@ class _SellDialogContentState extends State<SellDialogContent> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            sellcard(img: data['post_pic2']),
+                            sellcard(img: data['sale_pic2']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(img: data['post_pic3']),
+                            sellcard(img: data['sale_pic3']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(img: data['post_pic4']),
+                            sellcard(img: data['sale_pic4']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            sellcard(img: data['post_pic5']),
+                            sellcard(img: data['sale_pic5']),
                             SizedBox(
                               width: 10.0,
                             ),
@@ -96,15 +114,29 @@ class _SellDialogContentState extends State<SellDialogContent> {
                     alignment: Alignment.centerLeft,
                     child: Column(
                       children: [
-                        Text(
-                          data['title'],
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              data['title'],
+                              style: TextStyle(
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15.0,
+                            ),
+                            Text(
+                              data['phone_number'],
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: tPrimaryActionColor,
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
-                          data['contact'],
+                          data['content'],
                           style: TextStyle(
                             fontSize: 23.0,
                           ),
@@ -135,9 +167,31 @@ class sellcard extends StatelessWidget {
               Container(
                 width: 200.0,
                 height: 100.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover, image: NetworkImage(img!)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    img!,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      return Image.asset(
+                        'assets/images/default_plant.jpg',
+                        width: 108,
+                        height: 108,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

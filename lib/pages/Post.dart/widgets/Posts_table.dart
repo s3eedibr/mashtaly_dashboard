@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mashtaly_dashboard/constants/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mashtaly_dashboard/pages/SellPlant.dart/widgets/sellDialog.dart';
@@ -59,10 +60,10 @@ class _PostsTableState extends State<PostTableScreen> {
                       size: ColumnSize.L,
                     ),
                     DataColumn(
-                      label: Text('Date'),
+                      label: Text('user'),
                     ),
                     DataColumn(
-                      label: Text('Status'),
+                      label: Text('Date'),
                     ),
                     DataColumn(
                       label: Text('Post'),
@@ -73,10 +74,10 @@ class _PostsTableState extends State<PostTableScreen> {
                         (post) => DataRow(
                           cells: [
                             DataCell(Text('${post['id']}')),
-                            DataCell(Text('${post['date']}')),
-                            DataCell(Text('true' == '${post['posted']}'
-                                ? 'Accepted'
-                                : 'Rejected')),
+                            DataCell(Text('${post['user']}')),
+                            DataCell(DateParse(
+                              firebaseDateString: '${post['date']}',
+                            )),
                             DataCell(InkWell(
                               onTap: () {},
                               child: IconButton(
@@ -350,6 +351,17 @@ class _PostsTableState extends State<PostTableScreen> {
                       .toList(),
                 )),
     );
+  }
+}
+
+class DateParse extends StatelessWidget {
+  late String firebaseDateString;
+  DateParse({super.key, required this.firebaseDateString});
+  @override
+  Widget build(BuildContext context) {
+    DateTime dateTime = DateTime.parse(firebaseDateString);
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+    return Text(formattedDate);
   }
 }
 

@@ -25,6 +25,9 @@ class PostPage extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(
+          height: 15,
+        ),
         Expanded(
             child: ListView(
           children: [PostTableScreen()],

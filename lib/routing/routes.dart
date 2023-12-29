@@ -12,8 +12,8 @@ const accountsPageRoute = "/Accounts";
 const authenticationPageDisplayName = "Log out";
 const authenticationPageRoute = "/auth";
 
-const settingPageDisplayName = "Setting";
-const settingPageRoute = "/Setting";
+const ReportingPageDisplayName = "Reporting";
+const ReportingPageRoute = "/Reporting";
 
 const sellPlantPageDisplayName = "SellPlant";
 const sellPlantPageRoute = "/SellPlant";
@@ -34,6 +34,6 @@ List<MenuItem> sideMenuItemRoutes = [
   MenuItem(accountsPageDisplayName, accountsPageRoute),
   MenuItem(sellPlantPageDisplayName, sellPlantPageRoute),
   MenuItem(postPlantPageDisplayName, postPlantPageRoute),
-  MenuItem(settingPageDisplayName, settingPageRoute),
+  MenuItem(ReportingPageDisplayName, ReportingPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];

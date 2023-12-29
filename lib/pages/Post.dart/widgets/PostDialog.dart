@@ -43,16 +43,33 @@ class _PostDialogContentState extends State<PostDialogContent> {
                   Center(
                     child: Column(
                       children: [
-                        Image(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            data['sale_pic1'],
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            data['post_pic1'],
+                            width: 600,
+                            height: 300,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                            errorBuilder: (BuildContext context, Object error,
+                                StackTrace? stackTrace) {
+                              return Image.asset(
+                                'assets/images/default_plant.jpg',
+                                width: 200,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
-                          width: 600,
-                          height: 300,
-                        ),
-                        SizedBox(
-                          height: 20.0,
                         ),
                       ],
                     ),
@@ -67,19 +84,19 @@ class _PostDialogContentState extends State<PostDialogContent> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            postcard(img: data['sale_pic2']),
+                            postcard(img: data['post_pic2']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            postcard(img: data['sale_pic3']),
+                            postcard(img: data['post_pic3']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            postcard(img: data['sale_pic4']),
+                            postcard(img: data['post_pic4']),
                             SizedBox(
                               width: 10.0,
                             ),
-                            postcard(img: data['sale_pic5']),
+                            postcard(img: data['post_pic5']),
                             SizedBox(
                               width: 10.0,
                             ),
@@ -132,11 +149,33 @@ class postcard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 200.0,
-                height: 100.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover, image: NetworkImage(img!)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    img!,
+                    width: 200.0,
+                    height: 100.0,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      return Image.asset(
+                        'assets/images/default_plant.jpg',
+                        width: 200,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

@@ -21,8 +21,10 @@ Future<List<Map<String, dynamic>>> getAllData(String collectionName) async {
 
       try {
         // Get a snapshot of data for the current user, ordered by date in descending order
-        QuerySnapshot userDataSnapshot =
-            await userPostsRef.orderBy('date', descending: true).get();
+        QuerySnapshot userDataSnapshot = await userPostsRef
+            .where('posted', isEqualTo: false)
+            .orderBy('date', descending: true)
+            .get();
 
         // Iterate through each data document and add data to the list
         for (final dataDoc in userDataSnapshot.docs) {

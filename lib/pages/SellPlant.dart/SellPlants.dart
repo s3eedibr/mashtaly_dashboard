@@ -26,6 +26,9 @@ class SellPlantsPage extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(
+          height: 15,
+        ),
         Expanded(
             child: ListView(
           children: [SellPlantsTableScreen()],

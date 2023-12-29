@@ -61,9 +61,6 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                       label: Text('Date'),
                     ),
                     DataColumn(
-                      label: Text('Status'),
-                    ),
-                    DataColumn(
                       label: Text('SellPost'),
                     ),
                   ],
@@ -73,9 +70,6 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                           cells: [
                             DataCell(Text('${sellPost['id']}')),
                             DataCell(Text('${sellPost['date']}')),
-                            DataCell(Text('true' == '${sellPost['posted']}'
-                                ? 'Accepted'
-                                : 'Rejected')),
                             DataCell(InkWell(
                               onTap: () {},
                               child: IconButton(
@@ -335,7 +329,7 @@ class _SellPlantsTableState extends State<SellPlantsTableScreen> {
                                                   }),
                                             ),
                                             const SizedBox(
-                                              width: 150,
+                                              width: 270,
                                             ),
                                           ],
                                         );

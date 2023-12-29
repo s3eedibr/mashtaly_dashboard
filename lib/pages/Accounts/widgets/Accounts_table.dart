@@ -21,11 +21,12 @@ class _AccountTableState extends State<AccountTableScreen> {
   @override
   void initState() {
     super.initState();
-    fetchDataFromFirebase();
+    fecchAccountData();
   }
 
-  Future<void> fetchDataFromFirebase() async {
-    QuerySnapshot querySnapshot = await account.get();
+  Future<void> fecchAccountData() async {
+    QuerySnapshot querySnapshot =
+        await account.where('isAdmin', isEqualTo: false).get();
     setState(() {
       accountData = querySnapshot.docs
           .map((DocumentSnapshot document) =>
