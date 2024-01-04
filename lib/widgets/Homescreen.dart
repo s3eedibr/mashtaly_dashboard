@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
         Expanded(
           flex: 5,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: localNavigator(),
           ),
         )

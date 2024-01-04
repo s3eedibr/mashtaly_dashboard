@@ -9,6 +9,8 @@ const Color tPrimaryPlusTextColor = Color(0xC30D1904);
 const Color tThirdTextColor = Colors.white;
 
 const Color tPrimaryActionColor = Color(0xFF3ED400);
+const Color tPrimaryActionBarColor = Color(0xFF2F9901);
+
 const Color tSecondActionColor = Color(0xFFD2D8CF);
 const Color tThirdTextErrorColor = Color(0xFFFF6724);
 const Color tSearchBarColor = Color(0xFFF5F5F5);

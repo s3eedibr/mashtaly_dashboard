@@ -2,65 +2,60 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mashtaly_dashboard/constants/colors.dart';
 import 'package:mashtaly_dashboard/constants/image_strings.dart';
-import 'package:mashtaly_dashboard/constants/style.dart';
 import 'custom_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//this page checked
-//appbar show logo on project and setting and name of user
-AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
-    AppBar(
-      leading: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Image.asset(
+PreferredSizeWidget topNavigationBar(
+        BuildContext context, GlobalKey<ScaffoldState> key) =>
+    PreferredSize(
+      preferredSize: Size.fromHeight(55),
+      child: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        title: Row(
+          children: [
+            Image.asset(
               tLogo,
-              width: 40,
+              height: 55,
+              width: 55,
+              fit: BoxFit.contain,
             ),
-          ),
-        ],
-      ),
-      title: Row(
-        children: [
-          const CustomText(
-            text: "Mashtaly Dashboard",
-            color: lightGrey,
-            size: 20,
-            weight: FontWeight.bold,
-          ),
-          Expanded(child: Container()),
-          UserName(
-            username: '',
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Container(
-            decoration: BoxDecoration(
-                color: active.withOpacity(.5),
-                borderRadius: BorderRadius.circular(30)),
-            child: Container(
+            SizedBox(
+              width: 5,
+            ),
+            const CustomText(
+              text: "Mashtaly Dashboard",
+              color: tPrimaryTextColor,
+              size: 18,
+              weight: FontWeight.bold,
+            ),
+            Expanded(child: Container()),
+            UserName(
+              username: '',
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30)),
-                padding: const EdgeInsets.all(2),
-                margin: const EdgeInsets.all(2),
+                    color: tPrimaryActionColor,
+                    borderRadius: BorderRadius.circular(65)),
+                padding: const EdgeInsets.all(1),
+                margin: const EdgeInsets.all(1),
                 child: ProfileImage(
                   profile_pic: '',
-                )),
-          )
-        ],
+                ))
+          ],
+        ),
+        elevation: 0,
       ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
     );
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-CollectionReference users = FirebaseFirestore.instance.collection('Users');
+CollectionReference users = FirebaseFirestore.instance.collection('users');
 
 class ProfileImage extends StatelessWidget {
-  late String profile_pic;
+  final String profile_pic;
   ProfileImage({super.key, required this.profile_pic});
 
   @override
@@ -80,27 +75,24 @@ class ProfileImage extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return CircleAvatar(
+            return Container(
               child: ClipOval(
-                child: Container(
-                  color: tBgColor,
-                  child: Image.network(
-                    data['profile_pic'],
-                    width: 70,
-                    height: 70,
-                    fit: BoxFit.cover,
-                  ),
+                child: Image.network(
+                  data['profile_pic'],
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
                 ),
               ),
             );
           }
-          return Text("loading");
+          return Container();
         });
   }
 }
 
 class UserName extends StatelessWidget {
-  late String username;
+  final String username;
 
   UserName({
     super.key,
@@ -124,13 +116,15 @@ class UserName extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return CustomText(
-              text: data['name'],
-              color: tPrimaryActionColor,
-              size: 21,
+            return Text(
+              data['name'],
+              style: TextStyle(
+                  color: tPrimaryTextColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             );
           }
-          return Text("loading");
+          return Container();
         });
   }
 }

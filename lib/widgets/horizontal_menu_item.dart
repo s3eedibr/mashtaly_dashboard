@@ -17,14 +17,33 @@ class HorizontalMenuItem extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return InkWell(
-        onTap: onTap,
-        child: Obx(() => Container(
-              color: Colors.transparent,
-              child: Row(
-                children: [
-                  SizedBox(width: width / 88),
-                  if (!menuController.isActive(itemName))
-                    Row(
+      onTap: onTap,
+      child: Obx(
+        () => Container(
+          child: Row(
+            children: [
+              SizedBox(width: width / 87),
+              if (!menuController.isActive(itemName))
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: menuController.returnIconFor(itemName),
+                    ),
+                    CustomText(
+                      text: itemName,
+                      color: lightGrey,
+                    ),
+                  ],
+                )
+              else
+                SizedBox(
+                  width: width / 7,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: tPrimaryActionColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16),
@@ -32,35 +51,18 @@ class HorizontalMenuItem extends StatelessWidget {
                         ),
                         CustomText(
                           text: itemName,
-                          color: lightGrey,
+                          color: tThirdTextColor,
+                          size: 16,
+                          weight: FontWeight.bold,
                         ),
                       ],
-                    )
-                  else
-                    SizedBox(
-                      width: width / 7,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: tPrimaryActionColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: menuController.returnIconFor(itemName),
-                            ),
-                            CustomText(
-                              text: itemName,
-                              color: tThirdTextColor,
-                              size: 18,
-                              weight: FontWeight.bold,
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
-                ],
-              ),
-            )));
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

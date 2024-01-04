@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mashtaly_dashboard/constants/colors.dart';
 import 'package:mashtaly_dashboard/routing/routes.dart';
 import 'package:get/get.dart';
@@ -18,20 +19,20 @@ class MenuController extends GetxController {
   Widget returnIconFor(String itemName) {
     switch (itemName) {
       case overviewPageDisplayName:
-        return _customIcon(Icons.trending_up, itemName);
+        return _customIcon(FontAwesomeIcons.chartColumn, itemName);
       case plantPageDisplayName:
-        return _customIcon(Icons.energy_savings_leaf, itemName);
+        return _customIcon(FontAwesomeIcons.leaf, itemName);
       case accountsPageDisplayName:
-        return _customIcon(Icons.person, itemName);
+        return _customIcon(FontAwesomeIcons.users, itemName);
       case authenticationPageDisplayName:
-        return _customIcon(Icons.exit_to_app, itemName);
-      case ReportingPageDisplayName:
-        return _customIcon(Icons.report, itemName);
-
-      case sellPlantPageDisplayName:
-        return _customIcon(Icons.monetization_on, itemName);
+        return _customIcon(FontAwesomeIcons.arrowRightFromBracket, itemName);
+      case salePlantPageDisplayName:
+        return _customIcon(FontAwesomeIcons.dollar, itemName);
       case postPlantPageDisplayName:
-        return _customIcon(Icons.post_add, itemName);
+        return _customIcon(FontAwesomeIcons.newspaper, itemName);
+      case ReportingPageDisplayName:
+        return _customIcon(FontAwesomeIcons.triangleExclamation, itemName);
+
       default:
         return _customIcon(Icons.exit_to_app, itemName);
     }
@@ -39,7 +40,7 @@ class MenuController extends GetxController {
 
   Widget _customIcon(IconData icon, String itemName) {
     if (isActive(itemName)) {
-      return Icon(icon, size: 22, color: tThirdTextColor);
+      return Icon(icon, size: 25, color: tThirdTextColor);
     }
 
     return Icon(

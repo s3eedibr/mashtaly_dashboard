@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mashtaly_dashboard/pages/Accounts/Accounts.dart';
-import 'package:mashtaly_dashboard/pages/Plants/Plants.dart';
-import 'package:mashtaly_dashboard/pages/SellPlant.dart/SellPlants.dart';
-import 'package:mashtaly_dashboard/pages/overview/overview.dart';
-import 'package:mashtaly_dashboard/pages/Reporting/Reporting.dart';
+import 'package:mashtaly_dashboard/screens/Done%20accounts/Accounts.dart';
+import 'package:mashtaly_dashboard/screens/Done%20plants/plants.dart';
+import 'package:mashtaly_dashboard/screens/Done%20overview/overview.dart';
+import 'package:mashtaly_dashboard/screens/Done%20reports/reports.dart';
 import 'package:mashtaly_dashboard/routing/routes.dart';
 
-import '../pages/Post.dart/Posts.dart';
+import '../screens/Done articles/articles.dart';
+import '../screens/Done salePlant/salePlants.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -18,12 +18,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(const AccountsPage());
     case ReportingPageRoute:
       return _getPageRoute(const ReportingPage());
-    case sellPlantPageRoute:
-      return _getPageRoute(const SellPlantsPage());
+    case salePlantPageRoute:
+      return _getPageRoute(const SalePlantsPage());
     case postPlantPageRoute:
       return _getPageRoute(const PostPage());
     default:
-      return _getPageRoute(const OverviewPage());
+      return _getPageRoute(Container());
   }
 }
 

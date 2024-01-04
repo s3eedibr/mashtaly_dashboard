@@ -46,6 +46,12 @@ dependencies:
 
   date_picker_timeline:
   cloud_firestore: ^4.13.3
+  syncfusion_flutter_charts: ^21.2.4
+  firebase_messaging: ^14.7.9
+  http: ^1.1.2
+  font_awesome_flutter: ^10.6.0
+  image_picker: ^1.0.5
+  firebase_storage: ^11.5.6
 month_year_picker:
 dev_dependencies:
   flutter_test:

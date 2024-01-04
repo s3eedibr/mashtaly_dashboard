@@ -6,13 +6,12 @@ import 'package:mashtaly_dashboard/controllers/menu_controller.dart'
     as menu_controller;
 import 'package:mashtaly_dashboard/controllers/navigation_controller.dart';
 import 'package:mashtaly_dashboard/layout.dart';
-import 'package:mashtaly_dashboard/pages/404/error.dart';
-import 'package:mashtaly_dashboard/pages/authentication/authentication.dart';
+import 'package:mashtaly_dashboard/screens/Done%20404/error.dart';
+import 'package:mashtaly_dashboard/screens/Done%20authentication/login_screen.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Animations/splash_screen.dart';
-import 'Constants/colors.dart';
 import 'firebase_options.dart';
 import 'routing/routes.dart';
 
@@ -58,6 +57,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dashboard',
       theme: ThemeData(
+        fontFamily: 'Mulish',
         scaffoldBackgroundColor: light,
         textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme)
             .apply(bodyColor: Colors.black),
@@ -65,7 +65,6 @@ class MyApp extends StatelessWidget {
           TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
           TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
         }),
-        primarySwatch: Colors.blue,
       ),
       // home: AuthenticationPage(),
     );

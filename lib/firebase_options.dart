@@ -44,38 +44,42 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCAaGMi55J_u7ccZkmgHOorqNmEC-c88w0',
-    appId: '1:68188123665:web:f7c2242d6421764e49b7b0',
-    messagingSenderId: '68188123665',
-    projectId: 'mashtalydashboard2',
-    authDomain: 'mashtalydashboard2.firebaseapp.com',
-    storageBucket: 'mashtalydashboard2.appspot.com',
-    measurementId: 'G-R1FWXYN1TN',
+    apiKey: 'AIzaSyCDLZcFyfNSuNkXfpryvzAeusBn-ZcbHT4',
+    appId: '1:607471003986:web:8610aa4609d7070ed5728b',
+    messagingSenderId: '607471003986',
+    projectId: 'mashtaly-hu',
+    authDomain: 'mashtaly-hu.firebaseapp.com',
+    storageBucket: 'mashtaly-hu.appspot.com',
+    measurementId: 'G-MDVMMBZ5JN',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCjVLeqiatYV_0gD5COkFsENJnWNBOdjT8',
-    appId: '1:68188123665:android:c0691240f60f15e549b7b0',
-    messagingSenderId: '68188123665',
-    projectId: 'mashtalydashboard2',
-    storageBucket: 'mashtalydashboard2.appspot.com',
+    apiKey: 'AIzaSyD7yuGX-RJbBlv4KpDHE2kIF0IlTZ2_XO0',
+    appId: '1:607471003986:android:257e263a2631da96d5728b',
+    messagingSenderId: '607471003986',
+    projectId: 'mashtaly-hu',
+    storageBucket: 'mashtaly-hu.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAP0MW1W9JsWzm3nfW68BEAl_CmbSVg3c0',
-    appId: '1:68188123665:ios:7dd9d4b2aa28e24f49b7b0',
-    messagingSenderId: '68188123665',
-    projectId: 'mashtalydashboard2',
-    storageBucket: 'mashtalydashboard2.appspot.com',
-    iosBundleId: 'com.example.mashtalyDashboard',
+    apiKey: 'AIzaSyCnnH6kgXC01Drc5cW7teOgPm698yFPWRs',
+    appId: '1:607471003986:ios:427715a74568712cd5728b',
+    messagingSenderId: '607471003986',
+    projectId: 'mashtaly-hu',
+    storageBucket: 'mashtaly-hu.appspot.com',
+    iosClientId:
+        '607471003986-ia3cai305q2oajapotuf14pj1ahj4cbc.apps.googleusercontent.com',
+    iosBundleId: 'com.example.mashtalyApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAP0MW1W9JsWzm3nfW68BEAl_CmbSVg3c0',
-    appId: '1:68188123665:ios:5363fc37d3360c6349b7b0',
-    messagingSenderId: '68188123665',
-    projectId: 'mashtalydashboard2',
-    storageBucket: 'mashtalydashboard2.appspot.com',
-    iosBundleId: 'com.example.mashtalyDashboard.RunnerTests',
+    apiKey: 'AIzaSyCnnH6kgXC01Drc5cW7teOgPm698yFPWRs',
+    appId: '1:607471003986:ios:427715a74568712cd5728b',
+    messagingSenderId: '607471003986',
+    projectId: 'mashtaly-hu',
+    storageBucket: 'mashtaly-hu.appspot.com',
+    iosClientId:
+        '607471003986-ia3cai305q2oajapotuf14pj1ahj4cbc.apps.googleusercontent.com',
+    iosBundleId: 'com.example.mashtalyApp',
   );
 }

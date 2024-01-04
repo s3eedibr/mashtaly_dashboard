@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Delay for 10 seconds before triggering the onSplashFinished callback.
-    Future.delayed(const Duration(seconds: 3)).then(
+    Future.delayed(const Duration(seconds: 5)).then(
       (value) {
         // Call the callback function to notify that the splash screen is finished.
         widget.onSplashFinished();
@@ -41,12 +41,12 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 200,
             ),
             const Text(
-              "Mashtaly",
+              "Mashtaly Dashboard",
               style: TextStyle(
                 fontSize: 35,
                 fontFamily: 'Mulish',
                 fontWeight: FontWeight.bold,
-                color: tPrimaryActionColor,
+                color: tPrimaryTextColor,
               ),
             ),
             Image.asset(

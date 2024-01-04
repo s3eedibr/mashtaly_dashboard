@@ -32,4 +32,4 @@ const String tResetPasswordImage3 =
 const String tLogo = "assets/images/Logo.png";
 
 // menu
-const String menuIfnoIcon = "assets/images/kebab.png";
+const String menuInfoIcon = "assets/images/kebab.png";

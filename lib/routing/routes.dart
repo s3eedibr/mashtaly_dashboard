@@ -1,10 +1,10 @@
 const rootRoute = "/";
 
-const overviewPageDisplayName = "Overview";
+const overviewPageDisplayName = "Statistics";
 const overviewPageRoute = "/overview";
 
-const plantPageDisplayName = "Plant";
-const plantsPageRoute = "/Plant";
+const plantPageDisplayName = "Plants";
+const plantsPageRoute = "/Plants";
 
 const accountsPageDisplayName = "Accounts";
 const accountsPageRoute = "/Accounts";
@@ -12,14 +12,14 @@ const accountsPageRoute = "/Accounts";
 const authenticationPageDisplayName = "Log out";
 const authenticationPageRoute = "/auth";
 
-const ReportingPageDisplayName = "Reporting";
-const ReportingPageRoute = "/Reporting";
+const ReportingPageDisplayName = "Reports";
+const ReportingPageRoute = "/Reports";
 
-const sellPlantPageDisplayName = "SellPlant";
-const sellPlantPageRoute = "/SellPlant";
+const salePlantPageDisplayName = "Plants for sale";
+const salePlantPageRoute = "/SalePlants";
 
-const postPlantPageDisplayName = "Posts";
-const postPlantPageRoute = "/Posts";
+const postPlantPageDisplayName = "Articles";
+const postPlantPageRoute = "/Articles";
 
 class MenuItem {
   final String name;
@@ -30,10 +30,10 @@ class MenuItem {
 
 List<MenuItem> sideMenuItemRoutes = [
   MenuItem(overviewPageDisplayName, overviewPageRoute),
-  MenuItem(plantPageDisplayName, plantsPageRoute),
-  MenuItem(accountsPageDisplayName, accountsPageRoute),
-  MenuItem(sellPlantPageDisplayName, sellPlantPageRoute),
   MenuItem(postPlantPageDisplayName, postPlantPageRoute),
+  MenuItem(salePlantPageDisplayName, salePlantPageRoute),
   MenuItem(ReportingPageDisplayName, ReportingPageRoute),
+  MenuItem(accountsPageDisplayName, accountsPageRoute),
+  MenuItem(plantPageDisplayName, plantsPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];
