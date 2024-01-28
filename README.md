@@ -4,11 +4,11 @@ The Mashtaly Dashboard is a dedicated application, designed to streamline the ma
 
 **Key Features:**
 
-Content Management: The dashboard enables administrators to oversee and moderate community-generated content. From this centralized interface, admins can review, edit, or delete posts as necessary to maintain quality and adherence to community guidelines.
+**Content Management:** The dashboard enables administrators to oversee and moderate community-generated content. From this centralized interface, admins can review, edit, or delete posts as necessary to maintain quality and adherence to community guidelines.
 
-User Management: Administrators have the ability to manage user accounts and access permissions directly from the dashboard. This includes tasks such as user registration, account suspension, or user role assignment.
+**User Management:** Administrators have the ability to manage user accounts and access permissions directly from the dashboard. This includes tasks such as user registration, account suspension, or user role assignment.
 
-Statistical Analysis: The dashboard offers comprehensive statistics on the platform's activity, including the number of posts submitted by users and the total number of registered users. These insights provide valuable information for assessing platform engagement and growth.
+**Statistical Analysis:** The dashboard offers comprehensive statistics on the platform's activity, including the number of posts submitted by users and the total number of registered users. These insights provide valuable information for assessing platform engagement and growth.
 
 **Usage:**
 
