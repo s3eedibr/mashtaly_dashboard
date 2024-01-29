@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCnnH6kgXC01Drc5cW7teOgPm698yFPWRs',
+    apiKey: '***',
     appId: '1:607471003986:ios:427715a74568712cd5728b',
     messagingSenderId: '607471003986',
     projectId: 'mashtaly-hu',
