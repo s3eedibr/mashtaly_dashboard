@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 abstract class Constant {
   static const String constantServerKey =
-      'AAAAjXAX6VI:APA91bGV8nTXeZhrYxpDoOwDVWMjF-ctAzVdVvHMi1itmDH_cM43lQ8shh_V1gxrK0523kK0hv1cLWWFgLxWI8gvFFBc4jWNt0TV_Ha0rfid_3nKdzGwStY0SWGy9jWO59eLayWXR9rv';
+      '***:***-***';
 }
 
 Future<void> sendPushNotification({
